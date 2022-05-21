@@ -46,6 +46,9 @@ select*from Packers_nguyen
 select*from city_nguyen
 
 drop table people_nguyen
+drop table city_nguyen
+drop view Packers_nguyen
+
 --5. Create a stored procedure “sp_birthday_employees_[you_last_name]” that creates a new table “birthday_employees_your_last_name” and fill it with all employees that have a birthday on Feb. 
 --(Make a screen shot) drop the table. Employee table should not be affected.
 create proc sp_birthday_employees_nguyen as
