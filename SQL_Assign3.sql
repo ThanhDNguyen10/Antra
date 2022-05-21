@@ -16,7 +16,7 @@ DROP PROCEDURE sp_product_order_city_nguyen;
 create proc sp_product_order_city_nguyen @ProductName nvarchar(40), @CityTotalOrdered nvarchar(40) out
 as
 begin select top 5 o.ShipCity, p.ProductID, sum(Quantity) TotalOrdered from Orders o JOIN [Order Details] od on o.OrderID = od.OrderID JOIN Products p on p.ProductID = od.ProductID 
-where ProductName = @ProductName group by o.ShipCity, p.ProductID
+where ProductName = @ProductName group by o.ShipCity, p.ProductID group by sum(Quantity) DESC
 end
 
 begin 
