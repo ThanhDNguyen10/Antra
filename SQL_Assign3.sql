@@ -53,12 +53,15 @@ drop view Packers_nguyen
 --(Make a screen shot) drop the table. Employee table should not be affected.
 create proc sp_birthday_employees_nguyen as
 begin
-create table birthday_employees_nguyen (id int primary key not null, name nvarchar(40), dob date)
-insert into birthday_employees_nguyen values (1, 'Jason', '2000-02-01')
-insert into birthday_employees_nguyen values (2, 'Mary', '1990-02-05')
-insert into birthday_employees_nguyen values (3, 'Peter', '1980-02-11')
+select * into birthday_employees_nguyen from Employees e where MONTH(BirthDate) = '02'
 end
 
+begin
+exec sp_birthday_employees_nguyen
+end
+
+select*from birthday_employees_nguyen
 drop table birthday_employees_nguyen
+drop proc sp_birthday_employees_nguyen
 --6. How do you make sure two tables have the same data?
 --Use UNION, if the output rows number is the same with the orginal tables then they have the same data
