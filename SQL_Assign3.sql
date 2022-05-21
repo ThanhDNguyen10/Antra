@@ -1,7 +1,7 @@
---1. Create a view named ìview_product_order_[your_last_name]î, list all products and total ordered quantity for that product.
+--1. Create a view named ‚Äúview_product_order_[your_last_name]‚Äù, list all products and total ordered quantity for that product.
 create view view_product_order_nguyen as select ProductName, Sum(Quantity) TotalQuantity from Products p JOIn [Order Details] od ON p.ProductID = od.ProductID group by ProductName
 select*from view_product_order_nguyen
---2. Create a stored procedure ìsp_product_order_quantity_[your_last_name]î that accept product id as an input and total quantities of order as output parameter.
+--2. Create a stored procedure ‚Äúsp_product_order_quantity_[your_last_name]‚Äù that accept product id as an input and total quantities of order as output parameter.
 create proc sp_product_order_quantity_nguyen @prodID int, @total int out 
 as 
 begin select @total = sum(Quantity) from [Order Details] where ProductID = @prodID end
@@ -12,11 +12,11 @@ exec sp_product_order_quantity_nguyen 11, @total out
 print @total end
 
 DROP PROCEDURE sp_product_order_city_nguyen; 
---3. Create a stored procedure ìsp_product_order_city_[your_last_name]î that accept product name as an input and top 5 cities that ordered most that product combined with the total quantity of that product ordered from that city as output.
+--3. Create a stored procedure ‚Äúsp_product_order_city_[your_last_name]‚Äù that accept product name as an input and top 5 cities that ordered most that product combined with the total quantity of that product ordered from that city as output.
 create proc sp_product_order_city_nguyen @ProductName nvarchar(40), @CityTotalOrdered nvarchar(40) out
 as
-begin select top 5 o.ShipCity, sum(Quantity) TotalOrdered from Orders o JOIN [Order Details] od on o.OrderID = od.OrderID JOIN Products p on p.ProductID = od.ProductID 
-where ProductName = @ProductName group by o.ShipCity
+begin select top 5 o.ShipCity, p.ProductID, sum(Quantity) TotalOrdered from Orders o JOIN [Order Details] od on o.OrderID = od.OrderID JOIN Products p on p.ProductID = od.ProductID 
+where ProductName = @ProductName group by o.ShipCity, p.ProductID
 end
 
 begin 
@@ -24,10 +24,10 @@ declare @CityTotleOrdered nvarchar(40)
 exec sp_product_order_city_nguyen 'Chai', @CityTotleOrdered out 
 print @CityTotleOrdered end
 
---4. Create 2 new tables ìpeople_your_last_nameî ìcity_your_last_nameî. City table has two records: {Id:1, City: Seattle}, {Id:2, City: Green Bay}.
+--4. Create 2 new tables ‚Äúpeople_your_last_name‚Äù ‚Äúcity_your_last_name‚Äù. City table has two records: {Id:1, City: Seattle}, {Id:2, City: Green Bay}.
 --People has three records: {id:1, Name: Aaron Rodgers, City: 2}, {id:2, Name: Russell Wilson, City:1}, {Id: 3, Name: Jody Nelson, City:2}. 
---Remove city of Seattle. If there was anyone from Seattle, put them into a new city ìMadisonî. 
---Create a view ìPackers_your_nameî lists all people from Green Bay. If any error occurred, no changes should be made to DB. (after test) Drop both tables and view.
+--Remove city of Seattle. If there was anyone from Seattle, put them into a new city ‚ÄúMadison‚Äù. 
+--Create a view ‚ÄúPackers_your_name‚Äù lists all people from Green Bay. If any error occurred, no changes should be made to DB. (after test) Drop both tables and view.
 create table people_nguyen (id int primary key, name nvarchar(40), cityid int FOREIGN KEY REFERENCES city_nguyen(id))
 create table city_nguyen (id int primary key, city nvarchar(40))
 
@@ -46,7 +46,7 @@ select*from Packers_nguyen
 select*from city_nguyen
 
 drop table people_nguyen
---5. Create a stored procedure ìsp_birthday_employees_[you_last_name]î that creates a new table ìbirthday_employees_your_last_nameî and fill it with all employees that have a birthday on Feb. 
+--5. Create a stored procedure ‚Äúsp_birthday_employees_[you_last_name]‚Äù that creates a new table ‚Äúbirthday_employees_your_last_name‚Äù and fill it with all employees that have a birthday on Feb. 
 --(Make a screen shot) drop the table. Employee table should not be affected.
 create proc sp_birthday_employees_nguyen as
 begin
